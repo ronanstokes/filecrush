@@ -23,9 +23,11 @@ import static java.util.Collections.emptyList;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -470,7 +472,7 @@ public class Crush extends Configured implements Tool {
 				}
 			}
 
-			dfsBlockSize = Long.parseLong(job.get("dfs.block.size"));
+			dfsBlockSize = Long.parseLong(job.get("dfs.blocksize"));
 			maxEligibleSize = (long) (dfsBlockSize * threshold);
 		}
 
@@ -743,6 +745,7 @@ public class Crush extends Configured implements Tool {
 	 * Returns the output from {@link CrushReducer}. Each reducer writes out a mapping of source files to crush output file.
 	 */
 	private List<FileStatus> getOutputMappings() throws IOException {
+	    try {
 		FileStatus[] files = fs.listStatus(outDir, new PathFilter() {
 			Matcher matcher = Pattern.compile("part-\\d+").matcher("dummy");
 
@@ -755,6 +758,10 @@ public class Crush extends Configured implements Tool {
 		});
 
 		return asList(files);
+
+		} catch (FileNotFoundException ex) {
+			return Collections.emptyList();
+		}
 	}
 
 	/**
