@@ -311,7 +311,7 @@ public class Crush extends Configured implements Tool {
         in = in.trim();
         in = in.replaceAll(",",".");
         try { return Long.parseLong(in); } catch (NumberFormatException e) {}
-        final Matcher m = Pattern.compile("([\\d.,]+)\\s*(\\w)").matcher(in);
+        final Matcher m = Pattern.compile("([\\d.,]+)\\s*(\\w)").matcher(in.toUpperCase());
         m.find();
         int scale = 1;
         switch (m.group(2).charAt(0)) {
@@ -320,7 +320,7 @@ public class Crush extends Configured implements Tool {
             case 'K' :
                 scale *= 1024;
                 break;
-            default: throw new IllegalArgumentException();
+            default: throw new IllegalArgumentException("Unable to parse:  " + in);
         }
         return Math.round(Double.parseDouble(m.group(1)) * scale);
     }
