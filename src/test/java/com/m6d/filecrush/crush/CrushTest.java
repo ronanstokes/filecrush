@@ -1024,7 +1024,11 @@ public class CrushTest {
 
 		@Override
 		public FileStatus[] listStatus(Path f, PathFilter filter) throws IOException {
-			return delegate.listStatus(f, filter);
+			FileStatus[] contents = delegate.listStatus(f, filter);
+
+            Arrays.sort(contents);
+
+            return contents;
 		}
 
 		@Override
