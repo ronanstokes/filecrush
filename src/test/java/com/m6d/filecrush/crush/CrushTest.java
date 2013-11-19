@@ -79,7 +79,7 @@ public class CrushTest {
 		job.set("fs.default.name", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.setInt("mapred.reduce.tasks", 5);
-		job.setLong("dfs.block.size", 50);
+		job.setLong("dfs.blocksize", 50);
 
 		FileSystem delegate = FileSystem.get(job);
 

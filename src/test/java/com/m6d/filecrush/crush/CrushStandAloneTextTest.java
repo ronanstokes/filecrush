@@ -56,7 +56,7 @@ public class CrushStandAloneTextTest {
 
 		job.set("fs.default.name", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
-		job.setLong("dfs.block.size", 50);
+		job.setLong("dfs.blocksize", 50);
 	}
 
 	/**

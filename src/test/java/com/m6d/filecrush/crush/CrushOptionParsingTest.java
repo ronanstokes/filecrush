@@ -51,7 +51,7 @@ public class CrushOptionParsingTest {
 		job.set("fs.default.name", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.setInt("mapred.reduce.tasks", 20);
-		job.setLong("dfs.block.size", 1024 * 1024 * 64);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64);
 
 		FileSystem fs = FileSystem.get(job);
 		fs.setWorkingDirectory(new Path(tmp.getRoot().getAbsolutePath()));

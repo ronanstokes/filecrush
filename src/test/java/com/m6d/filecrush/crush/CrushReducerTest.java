@@ -175,7 +175,7 @@ public class CrushReducerTest {
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -211,7 +211,7 @@ public class CrushReducerTest {
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -247,7 +247,7 @@ public class CrushReducerTest {
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -283,7 +283,7 @@ public class CrushReducerTest {
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -320,7 +320,7 @@ public class CrushReducerTest {
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -356,7 +356,7 @@ public class CrushReducerTest {
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
