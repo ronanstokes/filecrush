@@ -57,7 +57,7 @@ public class CrushStandAloneSequenceFileTest {
 	public void setup() throws Exception {
 		job = new JobConf(false);
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.setLong("dfs.blocksize", 50);
 	}
