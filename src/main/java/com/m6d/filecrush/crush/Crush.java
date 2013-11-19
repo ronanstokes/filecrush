@@ -625,9 +625,11 @@ public class Crush extends Configured implements Tool {
 	 * @throws RuntimeException if can not determine block size
 	 */
   private long parseDfsBlockSize(JobConf job){
-    long dfsBlockSize = job.getLong("dfs.block.size", -1);
+    long dfsBlockSize = 0;
+    try {
+    dfsBlockSize = getFileSize(job,"dfs.block.size", -1);
     if (dfsBlockSize == -1){
-      dfsBlockSize = job.getLong("dfs.blocksize", -1);
+      dfsBlockSize = getFileSize(job,"dfs.blocksize", -1);
     }
     if (dfsBlockSize == -1) {
     Configuration conf = new Configuration();
@@ -635,12 +637,41 @@ public class Crush extends Configured implements Tool {
                 dfsBlockSize = fs.getDefaultBlockSize(srcDir);
                 fs.close();
     }
+    }
+    catch (Exception ex) {
+      throw new RuntimeException ( "Could not determine how to set block size. Abandon ship!",ex);
+    } 
     if (dfsBlockSize == -1){
       throw new RuntimeException ( "Could not determine how to set block size. Abandon ship!");
     }
     return dfsBlockSize;
   }
-  
+ 
+  private long getFileSize(JobConf job,String option, long deflt) {
+   String result = job.get(option);
+   if (result == null)
+      return deflt;
+   return parseFileSize(result);
+  } 
+
+    private long parseFileSize(String in) {
+        in = in.trim();
+        in = in.replaceAll(",",".");
+        try { return Long.parseLong(in); } catch (NumberFormatException e) {}
+        final Matcher m = Pattern.compile("([\\d.,]+)\\s*(\\w)").matcher(in.toUpperCase());
+        m.find();
+        int scale = 1;
+        switch (m.group(2).charAt(0)) {
+            case 'G' : scale *= 1024;
+            case 'M' : scale *= 1024;
+            case 'K' :
+                scale *= 1024;
+                break;
+            default: throw new IllegalArgumentException("Unable to parse: "+in);
+        }
+        return Math.round(Double.parseDouble(m.group(1)) * scale);
+    }
+
 	@Override
 	public int run(String[] args) throws Exception {
 
