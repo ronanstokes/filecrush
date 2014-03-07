@@ -21,10 +21,7 @@ import static java.lang.System.out;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,6 +32,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.avro.mapred.AvroTextOutputFormat;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
@@ -74,6 +72,9 @@ import org.apache.hadoop.mapred.lib.IdentityMapper;
 import org.apache.hadoop.mapred.lib.MultipleInputs;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.apache.avro.mapred.AvroInputFormat;
+import org.apache.avro.mapred.AvroOutputFormat;
+import java.util.Scanner;
 
 import com.m6d.filecrush.crush.Bucketer.Bucket;
 
@@ -233,6 +234,15 @@ public class Crush extends Configured implements Tool {
 
 		options.addOption(option);
 
+        option = OptionBuilder
+                .hasArg()
+                .withArgName("Avro schema file")
+                .withDescription("File containing Avro schema to use when the output format is Avro.")
+                .withLongOpt("avro-schema-file")
+                .create();
+
+        options.addOption(option);
+
 		option = OptionBuilder
 				.hasArg()
 				.withArgName("threshold")
@@ -316,6 +326,8 @@ public class Crush extends Configured implements Tool {
 		List<String> inFormats		= asList(SequenceFileInputFormat.class.getName());
 		List<String> outFormats		= asList(SequenceFileOutputFormat.class.getName());
 
+        String schemaFile = null;
+
 		String crushTimestamp;
 
 		Options options = buildOptions();
@@ -366,6 +378,10 @@ public class Crush extends Configured implements Tool {
 			if (cli.hasOption("output-format")) {
 				outFormats = asList(cli.getOptionValue("output-format"));
 			}
+
+            if (cli.hasOption("avro-schema-file")) {
+                schemaFile = cli.getOptionValue("avro-schema-file");
+            }
 
 			replacements = asList(dest.getName());
 
@@ -450,6 +466,10 @@ public class Crush extends Configured implements Tool {
 					outFormats = asList(cli.getOptionValues("output-format"));
 				}
 
+                if (cli.hasOption("avro-schema-file")) {
+                    schemaFile = cli.getOptionValue("avro-schema-file");
+                }
+
 				if (3 != nonOptions.length) {
 					throw new IllegalArgumentException("Could not find source directory, out directory, and job timestamp");
 				}
@@ -500,6 +520,8 @@ public class Crush extends Configured implements Tool {
 				inFmt = SequenceFileInputFormat.class.getName();
 			} else if ("text".equals(inFmt)) {
 				inFmt = TextInputFormat.class.getName();
+            } else if ("avro".equals(inFmt)) {
+                inFmt = AvroInputFormat.class.getName();
 			} else {
 				try {
 					if (!FileInputFormat.class.isAssignableFrom(Class.forName(inFmt))) {
@@ -518,6 +540,8 @@ public class Crush extends Configured implements Tool {
 				outFmt = SequenceFileOutputFormat.class.getName();
 			} else if ("text".equals(outFmt)) {
 				outFmt = TextOutputFormat.class.getName();
+            } else if ("avro".equals(outFmt)) {
+                outFmt = AvroOutputFormat.class.getName();
 			} else {
 				try {
 					if (!FileOutputFormat.class.isAssignableFrom(Class.forName(outFmt))) {
@@ -563,6 +587,11 @@ public class Crush extends Configured implements Tool {
 				throw new AssertionError();
 			}
 		}
+
+        if (schemaFile != null) {
+            String schemaText = new Scanner(new File(schemaFile)).useDelimiter("\\A").next();
+            job.set("avro.output.schema",schemaText);
+        }
 
 		return true;
 	}
@@ -686,7 +715,7 @@ public class Crush extends Configured implements Tool {
 		/*
 		 * Use a glob here because the temporary and task attempt work dirs have funny names.
 		 */
-		Path crushOutput = new Path(absOutDir + "/*/*/crush" + absSrcDir + "/" + dest.getName());
+		Path crushOutput = new Path(absOutDir + "/*/*/crush" + absSrcDir + "/" + dest.getName() + ".avro");
 
 		FileStatus[] statuses = fs.globStatus(crushOutput);
 
