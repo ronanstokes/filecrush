@@ -21,10 +21,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.ToolRunner;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.Schema;
@@ -54,7 +51,7 @@ import static org.junit.Assert.assertThat;
 @SuppressWarnings("deprecation")
 public class CrushStandAloneAvroFileTest {
 	@Rule
-	public final TemporaryFolder tmp = new TemporaryFolder();
+	public static TemporaryFolder tmp = new TemporaryFolder();
 
 	private JobConf job;
 
@@ -78,19 +75,15 @@ public class CrushStandAloneAvroFileTest {
 		job.setLong("dfs.block.size", 50);
 	}
 
-	/**
-	 * Crush creates a subdirectory in tmp to store all its transient data. Since this test uses the local file system, the present
-	 * working directory is the parent of tmp. We delete it here since it's not so useful to clutter the build directory with
-	 * empty directories.
-	 */
-	@After
-	public void deleteTmp() throws IOException {
-		File tmp = new File("tmp");
-
-		if (tmp.exists()) {
-//			assertThat(tmp.delete(), is(true));
-		}
-	}
+    /**
+     * We are using JUnit temporary directory and a Rule to get rid of the directory when we are done
+     * JUnit calls "after" before removing the temp directory
+     * So we use AfterClass to validate the directory is gone
+     */
+    @AfterClass
+    public static void deleteTmp() throws IOException {
+        assertThat(tmp.getRoot().exists(),is(false));
+    }
 
 	@Test
 	public void standAloneOutput() throws Exception {

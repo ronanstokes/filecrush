@@ -33,6 +33,7 @@ import java.util.List;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.ToolRunner;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,8 +46,10 @@ import com.m6d.filecrush.crush.Crush;
  */
 @SuppressWarnings("deprecation")
 public class CrushStandAloneTextTest {
+
+
 	@Rule
-	public final TemporaryFolder tmp = new TemporaryFolder();
+	public static TemporaryFolder tmp = new TemporaryFolder();
 
 	private JobConf job;
 
@@ -60,17 +63,13 @@ public class CrushStandAloneTextTest {
 	}
 
 	/**
-	 * Crush creates a subdirectory in tmp to store all its transient data. Since this test uses the local file system, the present
-	 * working directory is the parent of tmp. We delete it here since it's not so useful to clutter the build directory with
-	 * empty directories.
+     * We are using JUnit temporary directory and a Rule to get rid of the directory when we are done
+     * JUnit calls "after" before removing the temp directory
+     * So we use AfterClass to validate the directory is gone
 	 */
-	@After
-	public void deleteTmp() throws IOException {
-		File tmp = new File("tmp");
-
-		if (tmp.exists()) {
-			assertThat(tmp.delete(), is(true));
-		}
+	@AfterClass
+	public static void deleteTmp() throws IOException {
+        assertThat(tmp.getRoot().exists(),is(false));
 	}
 
 	@Test

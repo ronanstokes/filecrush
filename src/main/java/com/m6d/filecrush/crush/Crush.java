@@ -32,7 +32,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.avro.mapred.AvroTextOutputFormat;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Option;
@@ -490,7 +489,17 @@ public class Crush extends Configured implements Tool {
 				}
 			}
 
-			dfsBlockSize = Long.parseLong(job.get("dfs.block.size"));
+
+            String tmpBlockSize = job.get("dfs.block.size");
+
+            if (tmpBlockSize != null) {
+                dfsBlockSize = Long.parseLong(tmpBlockSize);}
+            else {
+                Configuration conf = new Configuration();
+                FileSystem fs = FileSystem.get(conf);
+                dfsBlockSize = fs.getDefaultBlockSize(srcDir);
+                fs.close();
+            }
 			maxEligibleSize = (long) (dfsBlockSize * threshold);
 		}
 
@@ -591,6 +600,7 @@ public class Crush extends Configured implements Tool {
         if (schemaFile != null) {
             String schemaText = new Scanner(new File(schemaFile)).useDelimiter("\\A").next();
             job.set("avro.output.schema",schemaText);
+            job.set("avro.input.schema",schemaText);
         }
 
 		return true;
@@ -714,8 +724,9 @@ public class Crush extends Configured implements Tool {
 
 		/*
 		 * Use a glob here because the temporary and task attempt work dirs have funny names.
+		 * And avro output files end in .avro
 		 */
-		Path crushOutput = new Path(absOutDir + "/*/*/crush" + absSrcDir + "/" + dest.getName() + ".avro");
+		Path crushOutput = new Path(absOutDir + "/*/*/crush" + absSrcDir + "/" + dest.getName() + "*");
 
 		FileStatus[] statuses = fs.globStatus(crushOutput);
 
@@ -729,6 +740,9 @@ public class Crush extends Configured implements Tool {
 	private void cloneOutput() throws IOException {
 
 		List<FileStatus> listStatus = getOutputMappings();
+
+        if (!fs.exists(outDir)) fs.mkdirs(outDir);
+        else LOG.info(outDir + "Already exists");
 
 		/*
 		 * Initialize to empty list, in which case swap() will be a no-op. The reference is then replaced with a real list, which is
@@ -772,6 +786,9 @@ public class Crush extends Configured implements Tool {
 	 * Returns the output from {@link CrushReducer}. Each reducer writes out a mapping of source files to crush output file.
 	 */
 	private List<FileStatus> getOutputMappings() throws IOException {
+        if (!fs.exists(outDir)) fs.mkdirs(outDir);
+        else LOG.info(outDir + " Already exists");
+
 		FileStatus[] files = fs.listStatus(outDir, new PathFilter() {
 			Matcher matcher = Pattern.compile("part-\\d+").matcher("dummy");
 

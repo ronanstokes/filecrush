@@ -4,11 +4,20 @@
 	<groupId>com.m6d</groupId>
 	<artifactId>filecrush</artifactId>
 	<name>M6D App - Filecrush</name>
-	<version>2.2.2-SNAPSHOT</version>
+	<version>2.2.3-SNAPSHOT</version>
 	<description>filecrush utility</description>
 	<packaging>jar</packaging>
+
+    <repositories>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
 	<properties>
-		<hadoop.version>0.20.2</hadoop.version>
+		<hadoop.version>2.0.0-mr1-cdh4.6.0</hadoop.version>
+        <mr.version>2.0.0-mr1-cdh4.6.0</mr.version>
 		<commons-cli.version>1.2</commons-cli.version>
 		<commons-logging.version>1.0.4</commons-logging.version>
 		<commons-lang.version>2.3</commons-lang.version>
@@ -21,7 +30,7 @@
 		<hamcrest.version>1.2</hamcrest.version>
 		<easymock.version>3.0</easymock.version>
 		<jetty.version>6.1.14</jetty.version>
-        <avro.version>1.7.6</avro.version>
+        <avro.version>1.7.4</avro.version>
 	</properties>
 
 	<build>
@@ -54,6 +63,7 @@
 
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -62,8 +72,13 @@
 
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
 				<configuration>
 					<archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.m6d.filecrush.crush.Crush</mainClass>
+                        </manifest>
 					</archive>
 				</configuration>
 				<executions>
@@ -75,17 +90,42 @@
 					</execution>
 				</executions>
 			</plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.m6d.filecrush.crush.Crush</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
 		</plugins>
 	</build>
 
 
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>${hadoop.version}</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
@@ -96,7 +136,7 @@
             <artifactId>avro-mapred</artifactId>
             <version>${avro.version}</version>
         </dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>${commons-logging.version}</version>
@@ -130,7 +170,8 @@
 			<artifactId>commons-cli</artifactId>
 			<version>${commons-cli.version}</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>             -->
+
 		<!--  test dependencies -->
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -165,9 +206,15 @@
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-test</artifactId>
-			<version>${hadoop.version}</version>
+			<version>${mr.version}</version>
 			<scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-minicluster</artifactId>
+            <version>${mr.version}</version>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
