@@ -75,6 +75,10 @@ If specified, these options must be appear as a group. When specifying multiple 
 
 EXAMPLES
 
+NOTE: For Avro, it currently only works in "Stand Alone" mode.  "Stand Alone" mode is triggered by passing only two unnamed parameters. For example:
+
+hadoop jar filecrush-2.2.3-SNAPSHOT-jar-with-dependencies.jar --input-format=avro  --output-format=avro  --avro-schema-file=schema.avsc  /user/example/work/input/ /user/example/work/output/
+
 Say we have the following files:
 
 /user/example/work/input/
