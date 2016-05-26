@@ -24,8 +24,6 @@ import org.apache.hadoop.fs.FileStatus;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.m6d.filecrush.crush.Bucketer;
-import com.m6d.filecrush.crush.FileStatusHasSize;
 import com.m6d.filecrush.crush.Bucketer.HasSize;
 
 

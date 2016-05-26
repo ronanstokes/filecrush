@@ -35,8 +35,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.m6d.filecrush.crush.Bucketer;
-import com.m6d.filecrush.crush.FileStatusHasSize;
 import com.m6d.filecrush.crush.Bucketer.Bucket;
 
 
