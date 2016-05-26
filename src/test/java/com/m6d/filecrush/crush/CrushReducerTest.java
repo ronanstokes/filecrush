@@ -60,7 +60,7 @@ public class CrushReducerTest {
 
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 
 		job.setLong("crush.timestamp", 98765);
@@ -169,13 +169,13 @@ public class CrushReducerTest {
 
 		job.set("mapred.tip.id", "task_201011081200_14527_r_1234");
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -205,13 +205,13 @@ public class CrushReducerTest {
 
 		job.set("mapred.tip.id", "task_201011081200_14527_r_1234");
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -241,13 +241,13 @@ public class CrushReducerTest {
 
 		job.set("mapred.tip.id", "task_201011081200_14527_r_1234");
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -277,13 +277,13 @@ public class CrushReducerTest {
 
 		job.set("mapred.tip.id", "task_201011081200_14527_r_1234");
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -314,13 +314,13 @@ public class CrushReducerTest {
 
 		job.set("mapred.tip.id", "task_201011081200_14527_r_1234");
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");
@@ -350,13 +350,13 @@ public class CrushReducerTest {
 
 		job.set("mapred.tip.id", "task_201011081200_14527_r_1234");
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 
 		job.setLong("crush.timestamp", 98765);
 
-		job.setLong("dfs.block.size", 1024 * 1024 * 64L);
+		job.setLong("dfs.blocksize", 1024 * 1024 * 64L);
 
 		job.setInt("crush.num.specs", 2);
 		job.set("crush.0.regex", "foo");

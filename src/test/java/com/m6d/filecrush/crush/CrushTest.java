@@ -76,10 +76,10 @@ public class CrushTest {
 	public void setupJob() throws IOException {
 		job = new JobConf(false);
 
-		job.set("fs.default.name", "file:///");
+		job.set("fs.defaultFS", "file:///");
 		job.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
 		job.setInt("mapred.reduce.tasks", 5);
-		job.setLong("dfs.block.size", 50);
+		job.setLong("dfs.blocksize", 50);
 
 		FileSystem delegate = FileSystem.get(job);
 
@@ -1025,7 +1025,11 @@ public class CrushTest {
 
 		@Override
 		public FileStatus[] listStatus(Path f, PathFilter filter) throws IOException {
-			return delegate.listStatus(f, filter);
+			FileStatus[] contents = delegate.listStatus(f, filter);
+
+            Arrays.sort(contents);
+
+            return contents;
 		}
 
 		@Override
