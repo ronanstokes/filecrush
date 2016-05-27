@@ -16,21 +16,21 @@
     </repositories>
 
 	<properties>
-		<hadoop.version>2.0.0-mr1-cdh4.6.0</hadoop.version>
-        <mr.version>2.0.0-mr1-cdh4.6.0</mr.version>
-		<commons-cli.version>1.2</commons-cli.version>
-		<commons-logging.version>1.0.4</commons-logging.version>
-		<commons-lang.version>2.3</commons-lang.version>
+		<hadoop.version>2.6.0-mr1-cdh5.4.1</hadoop.version>
+        <mr.version>2.6.0-mr1-cdh5.4.1</mr.version>
+		<commons-cli.version>1.3</commons-cli.version>
+		<commons-logging.version>1.1.3</commons-logging.version>
+		<commons-lang.version>3.3.2</commons-lang.version>
 		<commons-httpclient.version>3.0.1</commons-httpclient.version>
 		<log4j.version>1.2.13</log4j.version>
-		<slf4j.version>1.6.1</slf4j.version>
+		<slf4j.version>1.7.5</slf4j.version>
 		<plexus-utils.version>1.1</plexus-utils.version>
-		<junit.version>4.8.2</junit.version>
+		<junit.version>4.10</junit.version>
 		<mockito.version>1.8.5</mockito.version>
-		<hamcrest.version>1.2</hamcrest.version>
+		<hamcrest.version>1.3</hamcrest.version>
 		<easymock.version>3.0</easymock.version>
-		<jetty.version>6.1.14</jetty.version>
-        <avro.version>1.7.4</avro.version>
+		<jetty.version>6.1.26</jetty.version>
+        <avro.version>1.7.6</avro.version>
 	</properties>
 
 	<build>
@@ -65,8 +65,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 
@@ -179,7 +179,7 @@
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		 <dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
 			<version>${hamcrest.version}</version>
@@ -190,7 +190,7 @@
 			<artifactId>hamcrest-library</artifactId>
 			<version>${hamcrest.version}</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>

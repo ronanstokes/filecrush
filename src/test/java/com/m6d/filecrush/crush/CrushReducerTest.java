@@ -55,8 +55,14 @@ public class CrushReducerTest {
 		job.set("mapred.tip.id", "task_201011081200_014527_r_001234");
 		job.set("mapred.task.id", "attempt_201011081200_14527_r_001234_0");
 
+                try {
 		outDir = tmp.newFolder("out");
 		tmp.newFolder("out/_temporary");
+                } 
+               catch (Exception ex )
+               {
+                 throw new RuntimeException("failed to create temporary folders", ex);
+               }
 
 		job.set("mapred.output.dir", outDir.getAbsolutePath());
 

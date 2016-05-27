@@ -51,7 +51,8 @@ import static org.junit.Assert.assertThat;
 @SuppressWarnings("deprecation")
 public class CrushStandAloneAvroFileTest {
 	@Rule
-	public static TemporaryFolder tmp = new TemporaryFolder();
+	public TemporaryFolder tmp = new TemporaryFolder();
+	public static TemporaryFolder tmp2 = null;
 
 	private JobConf job;
 
@@ -80,10 +81,15 @@ public class CrushStandAloneAvroFileTest {
      * JUnit calls "after" before removing the temp directory
      * So we use AfterClass to validate the directory is gone
      */
-    @AfterClass
-    public static void deleteTmp() throws IOException {
-        assertThat(tmp.getRoot().exists(),is(false));
-    }
+	@After
+	public void saveTemp() throws IOException {
+        tmp2 = tmp;
+	}
+
+	@AfterClass
+	public static void deleteTmp() throws IOException {
+        assertThat(tmp2.getRoot().exists(),is(false));
+	}
 
 	@Test
 	public void standAloneOutput() throws Exception {

@@ -36,6 +36,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
@@ -49,7 +50,8 @@ public class CrushStandAloneTextTest {
 
 
 	@Rule
-	public static TemporaryFolder tmp = new TemporaryFolder();
+	public TemporaryFolder tmp = new TemporaryFolder();
+	public static TemporaryFolder tmp2 = null;
 
 	private JobConf job;
 
@@ -67,9 +69,14 @@ public class CrushStandAloneTextTest {
      * JUnit calls "after" before removing the temp directory
      * So we use AfterClass to validate the directory is gone
 	 */
+	@After
+	public void saveTemp() throws IOException {
+        tmp2 = tmp;
+	}
+
 	@AfterClass
 	public static void deleteTmp() throws IOException {
-        assertThat(tmp.getRoot().exists(),is(false));
+        assertThat(tmp2.getRoot().exists(),is(false));
 	}
 
 	@Test
@@ -113,7 +120,6 @@ public class CrushStandAloneTextTest {
 		verifyFile(in, "skipped-3", 3, 25);
 
 		verifyFile(subdir, "lil-0", 0, 1);
-		verifyFile(subdir, "lil-1", 1, 2);
 		verifyFile(subdir, "big-2", 2, 5);
 		verifyFile(subdir, "big-3", 3, 5);
 

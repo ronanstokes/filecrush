@@ -59,6 +59,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
@@ -108,6 +109,7 @@ public class CrushMapReduceTest extends HadoopTestCase {
 
 		ORIG_TMP = System.setProperty("java.io.tmpdir", TMP.getRoot().getAbsolutePath());
 
+                try {
 		File logsDir = TMP.newFolder("logs");
 
 		System.setProperty("hadoop.log.dir", logsDir.getAbsolutePath());
@@ -115,6 +117,11 @@ public class CrushMapReduceTest extends HadoopTestCase {
 		File dfsDir = TMP.newFolder("dfs");
 
 		System.setProperty("test.build.data", dfsDir.getAbsolutePath());
+                } 
+               catch (Exception ex)
+               { 
+                   throw new RuntimeException("Failed to create temporary directories", ex); 
+               }
 	}
 
 	@AfterClass
